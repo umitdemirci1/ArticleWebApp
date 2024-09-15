@@ -1,0 +1,65 @@
+﻿@model Core.DTOs.AdminStatsDTO
+
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var urls = new Dictionary<string, string>
+    {
+        { "Dashboard", Url.Action("Index", "Admin") },
+        { "Articles", Url.Action("AdminArticlePanel", "Admin") },
+        { "Comments", Url.Action("AdminComment", "Admin") },
+        { "Users", Url.Action("Index", "Admin") }
+    };
+}
+@section Sidebar {
+    <ul class="list-group me-4">
+        <li class="list-group-item p-xl-4 fw-bold fs-5 bg-primary text-secondary">
+            Admin Panel
+        </li>
+        @foreach (var url in urls)
+        {
+            <li class="list-group-item p-xl-4 fw-semibold">
+                <a href="@url.Value">@url.Key</a>
+            </li>
+        }
+    </ul>
+}
+
+<h3 class="ms-2">Dashboard</h3>
+<div class="container mt-5 d-grid grid">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header fw-semibold">
+                    Articles
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Total Number of Articles: @Model.TotalArticles</p>
+                    <p class="card-text">Number of Pending Articles: @Model.PendingArticles</p>
+                    <p class="card-text">Number of Rejected Articles: @Model.RejectedArticles</p>
+                    <button class="btn btn-primary" onclick="handleGoDetails('@urls["Articles"]')">Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header fw-semibold">
+                    Comments
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Total Number of Comments: @Model.TotalComments</p>
+                    <p class="card-text">Number of Pending Comments: @Model.PendingComments</p>
+                    <p class="card-text">Number of Rejected Comments: @Model.RejectedComments</p>
+                    <button class="btn btn-primary" onclick="handleGoDetails('@urls["Comments"]')">Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleGoDetails(url) {
+        window.location.href = url;
+    }
+</script>

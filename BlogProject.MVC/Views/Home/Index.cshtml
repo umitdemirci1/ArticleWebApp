@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ArticleWithAuthorDTO>
+
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<h2>Articles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Details", "Article", new { id = article.ArticleId })">
+                        @article.Title
+                    </a>
+                </td>
+                <td>@article.AuthorFirstName @article.AuthorLastName</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿
+// @import "../../../../node_modules/bootstrap/scss/mixins";
+
+$primary: #8B4513; // Dark brown
+$secondary: #F5F5F5; // Light gray
+$success: #8FBC8F; // Dark sea green
+$danger: #CD5C5C; // Indian red
+$warning: #FFD700; // Gold
+$info: #ADD8E6; // Light blue
+$light: #FFFFFF; // White
+$dark: #2F4F4F; // Dark slate gray
+
+$brand-color: #A0522D; // Sienna
+$body-bg: #FDF5E6; // Old lace
+$text-color: #333333;
+
+/*Yazı tipi değişkenleri*/
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-monospace: 'Courier New', monospace;
+$font-size-base: 1rem; // Temel yazı tipi boyutu
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$heading-font-family: 'Open Sans', sans-serif;
+$heading-font-weight: 600;
+$line-height-base: 1.5;
+
+@import "../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../node_modules/bootstrap/scss/variables";

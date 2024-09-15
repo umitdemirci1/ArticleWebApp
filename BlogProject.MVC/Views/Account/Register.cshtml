@@ -1,0 +1,74 @@
+﻿@using Core.DTOs
+@model RegisterRequest
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout_Account.cshtml";
+}
+
+<div class="container align-content-center vh-100 p-5">
+    <div class="border border-2 p-5 rounded-2">
+
+        <h3>Create Account</h3>
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="d-flex flex-column mb-2">
+                <label asp-for="Role" class="">- Please select your role -</label>
+                <select asp-for="Role" class="form-select" aria-label="Default select example">
+                    <option selected value="User">User</option>
+                    <option value="Author">Author</option>
+                </select>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">
+                    <i class="bi bi-envelope"></i>
+                </span>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">
+                    <i class="bi bi-person"></i>
+                </span>
+                <input asp-for="Username" type="text" class="form-control" placeholder="Username">
+            </div>
+            <div class="d-flex">
+                <div class="input-group mb-2 me-2">
+                    <span class="input-group-text">
+                        <i class="bi bi-person-check"></i>
+                    </span>
+                    <input asp-for="FirstName" type="text" class="form-control" placeholder="Firstname">
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">
+                        <i class="bi bi-person-check"></i>
+                    </span>
+                    <input asp-for="LastName" type="text" class="form-control" placeholder="Lastname">
+                </div>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">
+                    <i class="bi bi-lock"></i>
+                </span>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">
+                    <i class="bi bi-lock"></i>
+                </span>
+                <input asp-for="PasswordConfirmation" type="password" class="form-control"
+                       placeholder="Confirm Password">
+            </div>
+            <div class="d-flex mb-3">
+                <button type="submit" id="button" class="btn btn-primary w-100">Sign up</button>
+            </div>
+
+            <div asp-validation-summary="All" hidden id="validation" class="alert bg-danger"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("button").addEventListener("click", function () {
+        document.getElementById("validation").hidden = false;
+        console.log("clicked");
+    });
+</script>

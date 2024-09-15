@@ -1,0 +1,19 @@
+﻿@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+$theme-colors: (
+    "primary": #CDE8E5,
+    "secondary": #EEF7FF,
+    "success": #7AB2B2,
+    "danger": #dc143c,
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 540px,
+  lg: 640px,
+  xl: 748px,
+  xxl: 760px
+);
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
