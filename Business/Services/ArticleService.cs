@@ -75,5 +75,22 @@ namespace Business.Services
         {
             return await _unitOfWork.Articles.FindAsync(a => a.AppUserId == authorId);
         }
+
+        public async Task<IEnumerable<HomeCardArticleDto>> GetHomeArticlesAsync()
+        {
+            var articleDto = await _unitOfWork.Articles.SelectManyAsync(
+                    a => new HomeCardArticleDto
+                    {
+                        Id = a.Id,
+                        UserId = a.AppUserId,
+                        Title = a.Title,
+                        Content = a.Content,
+                        CoverImageUrl = a.CoverImageUrl,
+                        CreatedAt = a.CreatedAt,
+                    }
+                );
+
+            return articleDto;
+        }
     }
 }
