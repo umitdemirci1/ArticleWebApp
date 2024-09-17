@@ -37,8 +37,7 @@ namespace DataAccess.Repositories
                     ArticleId = a.Id,
                     Title = a.Title,
                     AuthorId = a.AppUser.Id,
-                    AuthorFirstName = a.AppUser.FirstName,
-                    AuthorLastName = a.AppUser.LastName
+                    AuthorFullName = a.AppUser.FullName
                 })
                 .ToListAsync();
         }

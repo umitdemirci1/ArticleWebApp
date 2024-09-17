@@ -20,7 +20,7 @@ namespace Core.Models
         public AppUser AppUser { get; set; } = null!;
         public bool IsPublished { get; set; } = false;
         public bool IsRejected { get; set; } = false;
-        
+
         public ICollection<ArticleImage> ArticleImages { get; set; } = new List<ArticleImage>();
         public ICollection<ArticleView> ArticleViews { get; set; } = new List<ArticleView>();
         public ICollection<ArticleLike> ArticleLikes { get; set; } = new List<ArticleLike>();
