@@ -77,5 +77,27 @@ namespace DataAccess.Repositories
             }
             return query;
         }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _dbSet.CountAsync(filter);
+        }
+
+        public async Task<TResult> SelectAsync<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector)
+        {
+            return await _dbSet.Where(filter).Select(selector).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<TResult>> SelectManyAsync<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> filter = null)
+        {
+            return filter == null
+                ? await _dbSet.Select(selector).ToListAsync()
+                : await _dbSet.Where(filter).Select(selector).ToListAsync();
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
     }
 }

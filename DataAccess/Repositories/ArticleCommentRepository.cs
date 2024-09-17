@@ -21,9 +21,9 @@ namespace DataAccess.Repositories
             return await _context.ArticleComments.CountAsync();
         }
 
-        public Task<int> CountAsync(Expression<Func<ArticleComment, bool>> expression)
+        public async Task<int> CountAsync(Expression<Func<ArticleComment, bool>> expression)
         {
-            return _context.ArticleComments.CountAsync(expression);
+            return await _context.ArticleComments.CountAsync(expression);
         }
     }
 }

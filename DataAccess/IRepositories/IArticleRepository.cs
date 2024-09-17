@@ -12,7 +12,5 @@ namespace DataAccess.IRepository
     public interface IArticleRepository : IRepository<Article>
     {
         Task<IEnumerable<ArticleWithAuthorDTO>> GetPublishedArticlesWithAuthor();
-        Task<int> CountAsync();
-        Task<int> CountAsync(Expression<Func<Article, bool>> expression);
     }
 }
