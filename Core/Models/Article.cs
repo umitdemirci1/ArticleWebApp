@@ -14,6 +14,7 @@ namespace Core.Models
         public string? Content { get; set; }
         public string? CoverImageUrl { get; set; } // Kapak resmi için
         public bool IsDeleted { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool HasGallery { get; set; } = false; // Galeri olup olmadığını belirten bayrak
         public int AppUserId { get; set; }
         public AppUser AppUser { get; set; } = null!;
