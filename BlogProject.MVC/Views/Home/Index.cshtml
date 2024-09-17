@@ -1,12 +1,16 @@
-﻿@model IEnumerable<ArticleWithAuthorDTO>
+﻿@model IEnumerable<HomeCardDto>
 
 @{
     ViewData["Title"] = "Articles";
 }
 
-<h2>Articles</h2>
+<div class="ms-2 mt-2">
+    <h2 class="fw-semibold ms-4">
+        Articles
+    </h2>
+</div>
 
-@for (int i = 0; i < 3; i++)
+@foreach (var model in Model)
 {
-    @await Html.PartialAsync("Components/_HomeCardComponent")
+    @await Html.PartialAsync("Components/_HomeCardComponent", model)
 }

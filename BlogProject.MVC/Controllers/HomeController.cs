@@ -28,13 +28,13 @@ namespace BlogProject.MVC.Controllers
  
         public async Task<IActionResult> Index()
         {      
-            var articles = await _apiClientHelper.GetAsync<IEnumerable<ArticleWithAuthorDTO>>("Article/GetAllArticlesWithAuthor/WithAuthor");
+            var cardDtos = await _apiClientHelper.GetAsync<IEnumerable<HomeCardDto>>("Home/HomeCard");
 
-            if(articles == null)
+            if(cardDtos == null)
             {
-                return View(new List<ArticleWithAuthorDTO>());
+                return View(new List<HomeCardDto>());
             }
-            return View(articles);
+            return View(cardDtos);
         }
         public async Task<IActionResult> Details(int id)
         {
