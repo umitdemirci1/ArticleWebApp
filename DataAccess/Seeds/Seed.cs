@@ -140,6 +140,39 @@ namespace DataAccess
                     HasGallery = true,
                     IsPublished = false,
                     AppUserId = 1,
+                },
+                new Article
+                {
+                    Id = 6,
+                    Title = "Sixth Article",
+                    Content = "This is the content of the sixth article.",
+                    IsDeleted = false,
+                    CoverImageUrl = "https://example.com/cover6.jpg",
+                    HasGallery = false,
+                    IsPublished = true,
+                    AppUserId = 3,
+                },
+                new Article
+                {
+                    Id = 7,
+                    Title = "Seventh Article",
+                    Content = "This is the content of the seventh article.",
+                    IsDeleted = false,
+                    CoverImageUrl = "https://example.com/cover7.jpg",
+                    HasGallery = true,
+                    IsPublished = false,
+                    AppUserId = 4,
+                },
+                new Article
+                {
+                    Id = 8,
+                    Title = "Eighth Article",
+                    Content = "This is the content of the eighth article.",
+                    IsDeleted = false,
+                    CoverImageUrl = "https://example.com/cover8.jpg",
+                    HasGallery = false,
+                    IsPublished = true,
+                    AppUserId = 5,
                 }
             );
 
