@@ -17,7 +17,7 @@ namespace Business.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<HomeCardAppUserDto> GetHomeCardUserByIdAsync(int userId)
+        public async Task<HomeCardAppUserDto> GetHomeCardUserByIdAsync(Guid userId)
         {
             var userDto = await _unitOfWork.Users.SelectAsync(
                 u => u.Id == userId,

@@ -4,6 +4,7 @@ using Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,17 +14,17 @@ namespace Business.Services
     public class AuthService : IAuthService
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
 
-        public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailSender emailSender, IConfiguration configuration, RoleManager<IdentityRole<int>> roleManager)
+        public AuthService(UserManager<AppUser> userManager, IEmailSender emailSender, IConfiguration configuration, RoleManager<IdentityRole<Guid>> roleManager, ITokenService tokenService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _emailSender = emailSender;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         public async Task<string> LoginAsync(LoginRequest request)
@@ -33,42 +34,31 @@ namespace Business.Services
             {
                 return null;
             }
+            if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var rememberMe = request.RememberMe;
 
-            var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
-            if (!result.Succeeded)
+                var token = _tokenService.GenerateJwtToken(user, userRoles, rememberMe);
+
+                return token;
+            }
+            return null;
+        }
+
+        public async Task<string> RefreshTokenAsync(string refreshToken)
+        {
+            // Yenileme token'ını doğrulayın
+            var user = await _userManager.FindByIdAsync(refreshToken);
+            if (user == null)
             {
                 return null;
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var rememberMe = request.RememberMe;
-            var token = GenerateJwtToken(user, roles, rememberMe);
+            var newToken = _tokenService.GenerateJwtToken(user, roles, false);
 
-            return token;
-        }
-
-        private string GenerateJwtToken(AppUser user, IList<string> roles, bool rememberMe)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
-
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: rememberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpireMinutes"])),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return newToken;
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterRequest request)
@@ -92,7 +82,7 @@ namespace Business.Services
             {
                 if (!await _roleManager.RoleExistsAsync(request.Role))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole<int>(request.Role));
+                    await _roleManager.CreateAsync(new IdentityRole<Guid>(request.Role));
                 }
                 await _userManager.AddToRoleAsync(user, request.Role);
             }

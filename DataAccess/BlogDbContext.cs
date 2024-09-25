@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class BlogDbContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
+    public class BlogDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
              : base(options)

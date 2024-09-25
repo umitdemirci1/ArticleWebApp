@@ -16,7 +16,7 @@ namespace Core.Models
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public bool HasGallery { get; set; } = false; // Galeri olup olmadığını belirten bayrak
-        public int AppUserId { get; set; }
+        public Guid AppUserId { get; set; }
         public AppUser AppUser { get; set; } = null!;
         public bool IsPublished { get; set; } = false;
         public bool IsRejected { get; set; } = false;

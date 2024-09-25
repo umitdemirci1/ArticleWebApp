@@ -12,7 +12,7 @@ namespace Business.IServices
         Task<int> AddArticleAsync(ArticleDto articleDto);
         Task UpdateArticleAsync(Article article);
         Task DeleteArticleAsync(int id);
-        Task<IEnumerable<Article>> GetArticlesByAuthorAsync(int authorId);
+        Task<IEnumerable<Article>> GetArticlesByAuthorAsync(Guid authorId);
         Task<IEnumerable<HomeCardArticleDto>> GetHomeArticlesAsync();
     }
 }

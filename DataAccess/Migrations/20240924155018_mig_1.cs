@@ -17,8 +17,7 @@ namespace DataAccess.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -32,8 +31,7 @@ namespace DataAccess.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -92,7 +90,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -117,9 +115,11 @@ namespace DataAccess.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoverImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HasGallery = table.Column<bool>(type: "bit", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
-                    IsPublished = table.Column<bool>(type: "bit", nullable: false)
+                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsPublished = table.Column<bool>(type: "bit", nullable: false),
+                    IsRejected = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,7 +138,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -160,7 +160,7 @@ namespace DataAccess.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,8 +177,8 @@ namespace DataAccess.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,7 +201,7 @@ namespace DataAccess.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -250,8 +250,9 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsRejected = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ArticleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -305,7 +306,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ArticleId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LikedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -358,7 +359,7 @@ namespace DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ArticleId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ViewedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -383,9 +384,9 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, null, "Admin", "ADMIN" },
-                    { 2, null, "Author", "AUTHOR" },
-                    { 3, null, "User", "USER" }
+                    { new Guid("64ec8363-9d54-498a-b3da-3aba1925b8e4"), null, "Admin", "ADMIN" },
+                    { new Guid("d54d970d-dff1-49b4-bd4f-438f0b3a8bec"), null, "Author", "AUTHOR" },
+                    { new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda"), null, "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -393,11 +394,11 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "296ce301-21aa-4751-90c4-ee13789063a8", new DateTime(2024, 9, 7, 1, 54, 23, 303, DateTimeKind.Local).AddTicks(3248), "user1@example.com", true, "John", false, "Doe", false, null, "USER1@EXAMPLE.COM", "USER1", "AQAAAAIAAYagAAAAEHRQ77o/PvNOL227OZg4SmB29Wfe/2cmFC3VTZd3G5Sgq6hZras4mlFiFZmzfLnHEw==", null, false, "", false, "user1" },
-                    { 2, 0, "4f9e8a3d-ccaa-4516-a23e-919aaf5a219e", new DateTime(2024, 9, 7, 1, 54, 23, 365, DateTimeKind.Local).AddTicks(2965), "user2@example.com", true, "Jane", false, "Doe", false, null, "USER2@EXAMPLE.COM", "USER2", "AQAAAAIAAYagAAAAEMbYVGAYiSdKG33pof51/2/X9EvuZvY7pOzgsNdj6U28zappdAVpymHR+8J0FgtmKQ==", null, false, "", false, "user2" },
-                    { 3, 0, "7eac635f-31c0-4acd-bada-4a70220d907d", new DateTime(2024, 9, 7, 1, 54, 23, 428, DateTimeKind.Local).AddTicks(5597), "user3@example.com", true, "Mark", false, "Doe", false, null, "USER2@EXAMPLE.COM", "USER3", "AQAAAAIAAYagAAAAEPae6uKvYsbOBBL3171JwKbhQuRwH4f05tFeqxdsAvYY/q61JKalutl7GzyYirZomw==", null, false, "", false, "user3" },
-                    { 4, 0, "2c474488-b820-4753-823c-b4f70d194794", new DateTime(2024, 9, 7, 1, 54, 23, 491, DateTimeKind.Local).AddTicks(1019), "user4@example.com", true, "Hans", false, "Doe", false, null, "USER2@EXAMPLE.COM", "USER4", "AQAAAAIAAYagAAAAEGuLe3Dfesx/IaHwAL6IY1ntfbrcXkyN44GUmwoIOWLCzABR1Ao5KpLK21TtKEVHXw==", null, false, "", false, "user4" },
-                    { 5, 0, "b781e1b5-7baf-4327-a25d-ca785dfcc207", new DateTime(2024, 9, 7, 1, 54, 23, 552, DateTimeKind.Local).AddTicks(8938), "user5@example.com", true, "Marry", false, "Doe", false, null, "USER2@EXAMPLE.COM", "USER5", "AQAAAAIAAYagAAAAEB1VJuglFvw6KPW79S/HZCMsVy5szVA7zaBEIbYvSrkHV2lsHavCTh10uufsEBPQBg==", null, false, "", false, "user5" }
+                    { new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"), 0, "c91520e7-0916-472f-8384-01b5c04f580b", new DateTime(2024, 9, 24, 18, 50, 18, 285, DateTimeKind.Local).AddTicks(9906), "user2@example.com", true, "Jane", false, "Doe", false, null, "USER2@EXAMPLE.COM", "USER2", "AQAAAAIAAYagAAAAEHS9mzWhVDWWAkscl4Vr1u1Cc1RRUsW1DP/e4kjrZb6PmO8VYEINzT49TxVE84ihMQ==", null, false, "", false, "user2" },
+                    { new Guid("a4523db6-ab98-41ed-a598-11419ad168e3"), 0, "e13a370c-c72f-451a-88c9-a435ee8151e0", new DateTime(2024, 9, 24, 18, 50, 18, 497, DateTimeKind.Local).AddTicks(3725), "user5@example.com", true, "Marry", false, "Doe", false, null, "USER5@EXAMPLE.COM", "USER5", "AQAAAAIAAYagAAAAEAN5lODC/aVNAFsyh7TIFPEssccQPPmnG7WF3HswdDLLv7YiegIiM8w426N94DLiYQ==", null, false, "", false, "user5" },
+                    { new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"), 0, "aee8acaf-cf04-4698-bdb3-c6824e485c80", new DateTime(2024, 9, 24, 18, 50, 18, 221, DateTimeKind.Local).AddTicks(6897), "user1@example.com", true, "John", false, "Doe", false, null, "USER1@EXAMPLE.COM", "USER1", "AQAAAAIAAYagAAAAEGxoDpw62TiB4yw/NxUny7yrX8fHAL4NJO7pQlgUy+YuctzhyxpwcSBuSaUilIjfmQ==", null, false, "", false, "user1" },
+                    { new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391"), 0, "0db32de0-ef7b-477f-9603-38f65dfcb204", new DateTime(2024, 9, 24, 18, 50, 18, 426, DateTimeKind.Local).AddTicks(1051), "user4@example.com", true, "Hans", false, "Doe", false, null, "USER4@EXAMPLE.COM", "USER4", "AQAAAAIAAYagAAAAEE3zypLDRZOj+5YmX/xJTofktsWhRxzAxaoj4915Lrc5K3sIh0tlqXrv7AuocNgx9w==", null, false, "", false, "user4" },
+                    { new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"), 0, "755feb5c-35df-4c05-ada6-45dea4ff13ae", new DateTime(2024, 9, 24, 18, 50, 18, 352, DateTimeKind.Local).AddTicks(7072), "user3@example.com", true, "Mark", false, "Doe", false, null, "USER3@EXAMPLE.COM", "USER3", "AQAAAAIAAYagAAAAEJXaQg6vqEn9768aLz1bkmhpSrdRVUw0/Tw8NVfuMu31rCS+KkK5FXov9Bgpkh722w==", null, false, "", false, "user3" }
                 });
 
             migrationBuilder.InsertData(
@@ -422,14 +423,17 @@ namespace DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Articles",
-                columns: new[] { "Id", "AppUserId", "Content", "CoverImageUrl", "HasGallery", "IsDeleted", "IsPublished", "Title" },
+                columns: new[] { "Id", "AppUserId", "Content", "CoverImageUrl", "CreatedAt", "HasGallery", "IsDeleted", "IsPublished", "IsRejected", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, "This is the content of the first article.", "https://example.com/cover1.jpg", true, false, true, "First Article" },
-                    { 2, 2, "This is the content of the second article.", "https://example.com/cover2.jpg", false, false, false, "Second Article" },
-                    { 3, 1, "This is the content of the third article.", "https://example.com/cover3.jpg", true, false, true, "Third Article" },
-                    { 4, 2, "This is the content of the fourth article.", "https://example.com/cover4.jpg", false, false, true, "Fourth Article" },
-                    { 5, 1, "This is the content of the fifth article.", "https://example.com/cover5.jpg", true, false, false, "Fifth Article" }
+                    { 1, new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"), "This is the content of the first article.", "https://example.com/cover1.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8090), true, false, true, false, "First Article" },
+                    { 2, new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"), "This is the content of the second article.", "https://example.com/cover2.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8146), false, false, false, false, "Second Article" },
+                    { 3, new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"), "This is the content of the third article.", "https://example.com/cover3.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8149), true, false, true, false, "Third Article" },
+                    { 4, new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391"), "This is the content of the fourth article.", "https://example.com/cover4.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8151), false, false, true, false, "Fourth Article" },
+                    { 5, new Guid("a4523db6-ab98-41ed-a598-11419ad168e3"), "This is the content of the fifth article.", "https://example.com/cover5.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8158), true, false, false, false, "Fifth Article" },
+                    { 6, new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"), "This is the content of the sixth article.", "https://example.com/cover6.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8160), false, false, true, false, "Sixth Article" },
+                    { 7, new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"), "This is the content of the seventh article.", "https://example.com/cover7.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8163), true, false, false, false, "Seventh Article" },
+                    { 8, new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"), "This is the content of the eighth article.", "https://example.com/cover8.jpg", new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8168), false, false, true, false, "Eighth Article" }
                 });
 
             migrationBuilder.InsertData(
@@ -437,11 +441,11 @@ namespace DataAccess.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 2 },
-                    { 3, 3 },
-                    { 3, 4 },
-                    { 3, 5 }
+                    { new Guid("d54d970d-dff1-49b4-bd4f-438f0b3a8bec"), new Guid("23cd5436-94e4-4428-bc70-d852d40e135d") },
+                    { new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda"), new Guid("a4523db6-ab98-41ed-a598-11419ad168e3") },
+                    { new Guid("64ec8363-9d54-498a-b3da-3aba1925b8e4"), new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81") },
+                    { new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda"), new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391") },
+                    { new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda"), new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1") }
                 });
 
             migrationBuilder.CreateIndex(

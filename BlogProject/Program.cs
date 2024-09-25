@@ -1,5 +1,3 @@
-
-
 using Business.IServices;
 using Business.Services;
 using DataAccess;
@@ -15,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,8 +51,15 @@ builder.Services.AddSwaggerGen(c =>
        });
 });
 
+builder.Services.AddDbContext<BlogDbContext>(options =>
+    options.UseSqlServer("Data Source=DESKTOP-FDT9J68\\EMRE;Initial Catalog=BlogApp;Integrated Security=true;TrustServerCertificate=true;"));
+
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<BlogDbContext>()
+    .AddDefaultTokenProviders();
+
 // JWT Ayarlarý
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,65 +71,31 @@ builder.Services.AddAuthentication(options =>
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = true,
         ValidateAudience = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(5),
+        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidateLifetime = true
-    };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnTokenValidated = context =>
-        {
-            var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
-            if (claimsIdentity != null)
-            {
-                var userId = context.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (userId != null)
-                {
-                    claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId));
-                }
-            }
-            return Task.CompletedTask;
-        },
-        OnAuthenticationFailed = context =>
-        {
-            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-            {
-                context.Response.Headers.Add("Token-Expired", "true");
-            }
-            return Task.CompletedTask;
-        }
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("RequireAuthorRole", policy => policy.RequireRole("Author"));
-    options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
-});
+builder.Services.AddAuthorization();
 
 // Add services to the container.
-builder.Services.AddDbContext<BlogDbContext>(options =>
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
-    .AddEntityFrameworkStores<BlogDbContext>()
-    .AddRoleManager<RoleManager<IdentityRole<int>>>();
-
-// DI Service
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILikeService, LikeService>();
+builder.Services.AddScoped<IViewService, ViewService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IHomeCardService, HomeCardService>();
+builder.Services.AddScoped<IArticleDetailService, ArticleDetailService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
-builder.Services.AddAuthorization();
-builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -135,7 +107,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1"));
 }
 

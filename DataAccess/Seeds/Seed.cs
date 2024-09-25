@@ -11,10 +11,17 @@ namespace DataAccess
         {
             // Seed data for AppUser
             var hasher = new PasswordHasher<AppUser>();
+
+            var user1Id = Guid.NewGuid();
+            var user2Id = Guid.NewGuid();
+            var user3Id = Guid.NewGuid();
+            var user4Id = Guid.NewGuid();
+            var user5Id = Guid.NewGuid();
+
             modelBuilder.Entity<AppUser>().HasData(
                 new AppUser
                 {
-                    Id = 1,
+                    Id = user1Id,
                     UserName = "user1",
                     FirstName = "John",
                     LastName = "Doe",
@@ -22,13 +29,13 @@ namespace DataAccess
                     Email = "user1@example.com",
                     NormalizedEmail = "USER1@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
+                    PasswordHash = hasher.HashPassword(new AppUser(), "Password123!"),
                     SecurityStamp = string.Empty,
                     IsDeleted = false
                 },
                 new AppUser
                 {
-                    Id = 2,
+                    Id = user2Id,
                     UserName = "user2",
                     FirstName = "Jane",
                     LastName = "Doe",
@@ -36,49 +43,49 @@ namespace DataAccess
                     Email = "user2@example.com",
                     NormalizedEmail = "USER2@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
+                    PasswordHash = hasher.HashPassword(new AppUser(), "Password123!"),
                     SecurityStamp = string.Empty,
                     IsDeleted = false
                 },
                 new AppUser
                 {
-                    Id = 3,
+                    Id = user3Id,
                     UserName = "user3",
                     FirstName = "Mark",
                     LastName = "Doe",
                     NormalizedUserName = "USER3",
                     Email = "user3@example.com",
-                    NormalizedEmail = "USER2@EXAMPLE.COM",
+                    NormalizedEmail = "USER3@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
+                    PasswordHash = hasher.HashPassword(new AppUser(), "Password123!"),
                     SecurityStamp = string.Empty,
                     IsDeleted = false
                 },
                 new AppUser
                 {
-                    Id = 4,
+                    Id = user4Id,
                     UserName = "user4",
                     FirstName = "Hans",
                     LastName = "Doe",
                     NormalizedUserName = "USER4",
                     Email = "user4@example.com",
-                    NormalizedEmail = "USER2@EXAMPLE.COM",
+                    NormalizedEmail = "USER4@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, "Password123!"),
+                    PasswordHash = hasher.HashPassword(new AppUser(), "Password123!"),
                     SecurityStamp = string.Empty,
                     IsDeleted = false
                 },
                  new AppUser
                  {
-                     Id = 5,
+                     Id = user5Id,
                      UserName = "user5",
                      FirstName = "Marry",
                      LastName = "Doe",
                      NormalizedUserName = "USER5",
                      Email = "user5@example.com",
-                     NormalizedEmail = "USER2@EXAMPLE.COM",
+                     NormalizedEmail = "USER5@EXAMPLE.COM",
                      EmailConfirmed = true,
-                     PasswordHash = hasher.HashPassword(null, "Password123!"),
+                     PasswordHash = hasher.HashPassword(new AppUser(), "Password123!"),
                      SecurityStamp = string.Empty,
                      IsDeleted = false
                  }
@@ -95,7 +102,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover1.jpg",
                     HasGallery = true,
                     IsPublished = true,
-                    AppUserId = 1,
+                    AppUserId = user1Id,
                 },
                 new Article
                 {
@@ -106,7 +113,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover2.jpg",
                     HasGallery = false,
                     IsPublished = false,
-                    AppUserId = 2,
+                    AppUserId = user2Id,
                 },
                 new Article
                 {
@@ -117,7 +124,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover3.jpg",
                     HasGallery = true,
                     IsPublished = true,
-                    AppUserId = 1,
+                    AppUserId = user3Id,
                 },
                 new Article
                 {
@@ -128,7 +135,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover4.jpg",
                     HasGallery = false,
                     IsPublished = true,
-                    AppUserId = 2,
+                    AppUserId = user4Id,
                 },
                 new Article
                 {
@@ -139,7 +146,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover5.jpg",
                     HasGallery = true,
                     IsPublished = false,
-                    AppUserId = 1,
+                    AppUserId = user5Id,
                 },
                 new Article
                 {
@@ -150,7 +157,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover6.jpg",
                     HasGallery = false,
                     IsPublished = true,
-                    AppUserId = 3,
+                    AppUserId = user1Id,
                 },
                 new Article
                 {
@@ -161,7 +168,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover7.jpg",
                     HasGallery = true,
                     IsPublished = false,
-                    AppUserId = 4,
+                    AppUserId = user2Id,
                 },
                 new Article
                 {
@@ -172,7 +179,7 @@ namespace DataAccess
                     CoverImageUrl = "https://example.com/cover8.jpg",
                     HasGallery = false,
                     IsPublished = true,
-                    AppUserId = 5,
+                    AppUserId = user3Id,
                 }
             );
 
@@ -203,19 +210,23 @@ namespace DataAccess
                   new Category { CategoryId = 3, Name = "Health", IsDeleted = false }
             );
 
-            modelBuilder.Entity<IdentityRole<int>>().HasData(
-               new IdentityRole<int> { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
-               new IdentityRole<int> { Id = 2, Name = "Author", NormalizedName = "AUTHOR" },
-               new IdentityRole<int> { Id = 3, Name = "User", NormalizedName = "USER" }
+            var adminRoleId = Guid.NewGuid();
+            var authorRoleId = Guid.NewGuid();
+            var userRoleId = Guid.NewGuid();
+
+            modelBuilder.Entity<IdentityRole<Guid>>().HasData(
+               new IdentityRole<Guid> { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN" },
+               new IdentityRole<Guid> { Id = authorRoleId, Name = "Author", NormalizedName = "AUTHOR" },
+               new IdentityRole<Guid> { Id = userRoleId, Name = "User", NormalizedName = "USER" }
            );
 
             // Seed data for UserRoles
-            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
-               new IdentityUserRole<int> { UserId = 1, RoleId = 1 }, // Admin User as Admin
-               new IdentityUserRole<int> { UserId = 2, RoleId = 2 }, // Author User as Author
-               new IdentityUserRole<int> { UserId = 3, RoleId = 3 }, // Regular User as User
-               new IdentityUserRole<int> { UserId = 4, RoleId = 3 }, // John Doe as User
-               new IdentityUserRole<int> { UserId = 5, RoleId = 3 }  // Jane Doe as User
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(
+               new IdentityUserRole<Guid> { UserId = user1Id, RoleId = adminRoleId }, // Admin User as Admin
+               new IdentityUserRole<Guid> { UserId = user2Id, RoleId = authorRoleId }, // Author User as Author
+               new IdentityUserRole<Guid> { UserId = user3Id, RoleId = userRoleId }, // Regular User as User
+               new IdentityUserRole<Guid> { UserId = user4Id, RoleId = userRoleId }, // John Doe as User
+               new IdentityUserRole<Guid> { UserId = user5Id, RoleId = userRoleId }  // Jane Doe as User
            );
             // Diğer seed verileri buraya eklenebilir...
         }

@@ -12,7 +12,7 @@ namespace Core.DTOs
         public string Content { get; set; }
         public string CoverImageUrl { get; set; }
         public bool HasGallery { get; set; }
-        public int AppUserId { get; set; }
+        public Guid AppUserId { get; set; }
         public bool IsPublished { get; set; }
         public List<int> CategoryIds { get; set; }
         public List<int> TagIds { get; set; }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20240911181043_mig_2")]
-    partial class mig_2
+    [Migration("20240924155018_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Core.Models.AppUser", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -109,10 +107,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c725d65b-684f-4e2e-8ad7-9de95675ab07",
-                            CreatedAt = new DateTime(2024, 9, 11, 21, 10, 42, 810, DateTimeKind.Local).AddTicks(5222),
+                            ConcurrencyStamp = "aee8acaf-cf04-4698-bdb3-c6824e485c80",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 221, DateTimeKind.Local).AddTicks(6897),
                             Email = "user1@example.com",
                             EmailConfirmed = true,
                             FirstName = "John",
@@ -121,7 +119,7 @@ namespace DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER1@EXAMPLE.COM",
                             NormalizedUserName = "USER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAELBNEmUjt7NDR2r5CA2S0/WMNFejTEOa5Lp5BruVMRezoCgRhlrLfgI2Zq93j3KDyg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGxoDpw62TiB4yw/NxUny7yrX8fHAL4NJO7pQlgUy+YuctzhyxpwcSBuSaUilIjfmQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -129,10 +127,10 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2265b46a-8118-44f3-b2f5-0554b9abb140",
-                            CreatedAt = new DateTime(2024, 9, 11, 21, 10, 42, 872, DateTimeKind.Local).AddTicks(3399),
+                            ConcurrencyStamp = "c91520e7-0916-472f-8384-01b5c04f580b",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 285, DateTimeKind.Local).AddTicks(9906),
                             Email = "user2@example.com",
                             EmailConfirmed = true,
                             FirstName = "Jane",
@@ -141,7 +139,7 @@ namespace DataAccess.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER2@EXAMPLE.COM",
                             NormalizedUserName = "USER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBrslQ2KJCOHddu3NfvHZch2qIPN9JCmkoc8PDVJaNjg+BcqPYj9HIQr6CGZAjjnkA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHS9mzWhVDWWAkscl4Vr1u1Cc1RRUsW1DP/e4kjrZb6PmO8VYEINzT49TxVE84ihMQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -149,19 +147,19 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1df6d8a3-2dee-4e1d-a915-85e8a302fc5d",
-                            CreatedAt = new DateTime(2024, 9, 11, 21, 10, 42, 934, DateTimeKind.Local).AddTicks(9349),
+                            ConcurrencyStamp = "755feb5c-35df-4c05-ada6-45dea4ff13ae",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 352, DateTimeKind.Local).AddTicks(7072),
                             Email = "user3@example.com",
                             EmailConfirmed = true,
                             FirstName = "Mark",
                             IsDeleted = false,
                             LastName = "Doe",
                             LockoutEnabled = false,
-                            NormalizedEmail = "USER2@EXAMPLE.COM",
+                            NormalizedEmail = "USER3@EXAMPLE.COM",
                             NormalizedUserName = "USER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGIUQEW6pqa/n5Aff6+DhvpiLSHLxo+bJFu2jOvFL1H6wSPEDUIZMo+bzwPj1QHpGw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJXaQg6vqEn9768aLz1bkmhpSrdRVUw0/Tw8NVfuMu31rCS+KkK5FXov9Bgpkh722w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -169,19 +167,19 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e4cdfcba-aed3-454f-ae53-d40c5fa2bf63",
-                            CreatedAt = new DateTime(2024, 9, 11, 21, 10, 42, 996, DateTimeKind.Local).AddTicks(5870),
+                            ConcurrencyStamp = "0db32de0-ef7b-477f-9603-38f65dfcb204",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 426, DateTimeKind.Local).AddTicks(1051),
                             Email = "user4@example.com",
                             EmailConfirmed = true,
                             FirstName = "Hans",
                             IsDeleted = false,
                             LastName = "Doe",
                             LockoutEnabled = false,
-                            NormalizedEmail = "USER2@EXAMPLE.COM",
+                            NormalizedEmail = "USER4@EXAMPLE.COM",
                             NormalizedUserName = "USER4",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH43RX1nEn+vLNFTceZeQ5+484rD3vox03u3fuXDb7UHMGlIy0lzNG5Fgr77SV3K/g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE3zypLDRZOj+5YmX/xJTofktsWhRxzAxaoj4915Lrc5K3sIh0tlqXrv7AuocNgx9w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -189,19 +187,19 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("a4523db6-ab98-41ed-a598-11419ad168e3"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a3707c8-851c-4922-9365-6597d51c86e4",
-                            CreatedAt = new DateTime(2024, 9, 11, 21, 10, 43, 58, DateTimeKind.Local).AddTicks(3614),
+                            ConcurrencyStamp = "e13a370c-c72f-451a-88c9-a435ee8151e0",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 497, DateTimeKind.Local).AddTicks(3725),
                             Email = "user5@example.com",
                             EmailConfirmed = true,
                             FirstName = "Marry",
                             IsDeleted = false,
                             LastName = "Doe",
                             LockoutEnabled = false,
-                            NormalizedEmail = "USER2@EXAMPLE.COM",
+                            NormalizedEmail = "USER5@EXAMPLE.COM",
                             NormalizedUserName = "USER5",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP1S8QzW6/YHnQ2edRy3ppOdUnJ2IlBCefuM1c2vzBogbFTcnQdA3nOeL4CIUDnBqA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAN5lODC/aVNAFsyh7TIFPEssccQPPmnG7WF3HswdDLLv7YiegIiM8w426N94DLiYQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -217,14 +215,17 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CoverImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("HasGallery")
                         .HasColumnType("bit");
@@ -251,9 +252,10 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = 1,
+                            AppUserId = new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"),
                             Content = "This is the content of the first article.",
                             CoverImageUrl = "https://example.com/cover1.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8090),
                             HasGallery = true,
                             IsDeleted = false,
                             IsPublished = true,
@@ -263,9 +265,10 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            AppUserId = 2,
+                            AppUserId = new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"),
                             Content = "This is the content of the second article.",
                             CoverImageUrl = "https://example.com/cover2.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8146),
                             HasGallery = false,
                             IsDeleted = false,
                             IsPublished = false,
@@ -275,9 +278,10 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            AppUserId = 1,
+                            AppUserId = new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"),
                             Content = "This is the content of the third article.",
                             CoverImageUrl = "https://example.com/cover3.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8149),
                             HasGallery = true,
                             IsDeleted = false,
                             IsPublished = true,
@@ -287,9 +291,10 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            AppUserId = 2,
+                            AppUserId = new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391"),
                             Content = "This is the content of the fourth article.",
                             CoverImageUrl = "https://example.com/cover4.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8151),
                             HasGallery = false,
                             IsDeleted = false,
                             IsPublished = true,
@@ -299,14 +304,54 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            AppUserId = 1,
+                            AppUserId = new Guid("a4523db6-ab98-41ed-a598-11419ad168e3"),
                             Content = "This is the content of the fifth article.",
                             CoverImageUrl = "https://example.com/cover5.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8158),
                             HasGallery = true,
                             IsDeleted = false,
                             IsPublished = false,
                             IsRejected = false,
                             Title = "Fifth Article"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AppUserId = new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"),
+                            Content = "This is the content of the sixth article.",
+                            CoverImageUrl = "https://example.com/cover6.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8160),
+                            HasGallery = false,
+                            IsDeleted = false,
+                            IsPublished = true,
+                            IsRejected = false,
+                            Title = "Sixth Article"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AppUserId = new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"),
+                            Content = "This is the content of the seventh article.",
+                            CoverImageUrl = "https://example.com/cover7.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8163),
+                            HasGallery = true,
+                            IsDeleted = false,
+                            IsPublished = false,
+                            IsRejected = false,
+                            Title = "Seventh Article"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AppUserId = new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"),
+                            Content = "This is the content of the eighth article.",
+                            CoverImageUrl = "https://example.com/cover8.jpg",
+                            CreatedAt = new DateTime(2024, 9, 24, 18, 50, 18, 562, DateTimeKind.Local).AddTicks(8168),
+                            HasGallery = false,
+                            IsDeleted = false,
+                            IsPublished = true,
+                            IsRejected = false,
+                            Title = "Eighth Article"
                         });
                 });
 
@@ -336,8 +381,8 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
@@ -414,8 +459,8 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
@@ -461,8 +506,8 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ArticleId")
                         .HasColumnType("int");
@@ -562,13 +607,11 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -594,25 +637,25 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("64ec8363-9d54-498a-b3da-3aba1925b8e4"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("d54d970d-dff1-49b4-bd4f-438f0b3a8bec"),
                             Name = "Author",
                             NormalizedName = "AUTHOR"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda"),
                             Name = "User",
                             NormalizedName = "USER"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -626,8 +669,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -636,7 +679,7 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -650,8 +693,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -660,7 +703,7 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -671,8 +714,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -681,13 +724,13 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -698,35 +741,35 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            RoleId = 1
+                            UserId = new Guid("adb10406-74a5-43d0-8dc4-7c7601a2be81"),
+                            RoleId = new Guid("64ec8363-9d54-498a-b3da-3aba1925b8e4")
                         },
                         new
                         {
-                            UserId = 2,
-                            RoleId = 2
+                            UserId = new Guid("23cd5436-94e4-4428-bc70-d852d40e135d"),
+                            RoleId = new Guid("d54d970d-dff1-49b4-bd4f-438f0b3a8bec")
                         },
                         new
                         {
-                            UserId = 3,
-                            RoleId = 3
+                            UserId = new Guid("ed33ce45-691f-4fb9-b363-bf030e3bbba1"),
+                            RoleId = new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda")
                         },
                         new
                         {
-                            UserId = 4,
-                            RoleId = 3
+                            UserId = new Guid("e0d55b4b-b6b5-49ee-bbd7-95ae242c3391"),
+                            RoleId = new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda")
                         },
                         new
                         {
-                            UserId = 5,
-                            RoleId = 3
+                            UserId = new Guid("a4523db6-ab98-41ed-a598-11419ad168e3"),
+                            RoleId = new Guid("fc815bfa-4553-4fa5-a122-d87dd80d6fda")
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -859,16 +902,16 @@ namespace DataAccess.Migrations
                     b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Core.Models.AppUser", null)
                         .WithMany()
@@ -877,7 +920,7 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Core.Models.AppUser", null)
                         .WithMany()
@@ -886,9 +929,9 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -901,7 +944,7 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Core.Models.AppUser", null)
                         .WithMany()

@@ -12,7 +12,7 @@ namespace Core.Models
         public int Id { get; set; }
         public int ArticleId { get; set; }
         public bool IsDeleted { get; set; }
-        public int AppUserId { get; set; }
+        public Guid AppUserId { get; set; }
         public DateTime LikedAt { get; set; } = DateTime.Now;
 
 

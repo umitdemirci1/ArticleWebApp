@@ -71,7 +71,7 @@ namespace Business.Services
             }
         }
 
-        public async Task<IEnumerable<Article>> GetArticlesByAuthorAsync(int authorId)
+        public async Task<IEnumerable<Article>> GetArticlesByAuthorAsync(Guid authorId)
         {
             return await _unitOfWork.Articles.FindAsync(a => a.AppUserId == authorId);
         }

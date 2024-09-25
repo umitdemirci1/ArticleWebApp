@@ -1,92 +1,98 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
 
 namespace BlogProject.MVC.Helpers
 {
     public class ApiClientHelper
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
-        public ApiClientHelper(HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+
+        public ApiClientHelper(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
         }
 
-        private void AddTokenToRequest()
+        private async Task<HttpRequestMessage> CreateRequestAsync(HttpMethod method, string requestUri, HttpContent content = null)
         {
-            var token = _httpContextAccessor.HttpContext.Request.Cookies["UserToken"];
+            var request = new HttpRequestMessage(method, requestUri);
+            var token = _httpContextAccessor.HttpContext?.Session.GetString("UserToken");
+
             if (!string.IsNullOrEmpty(token))
             {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
+
+            if (content != null)
+            {
+                request.Content = content;
+            }
+
+            return request;
         }
 
         public async Task<T> GetAsync<T>(string requestUri)
         {
-            AddTokenToRequest();
             string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
-      
-            var response = await _httpClient.GetAsync($"{baseUrl}/{requestUri}");
+            var request = await CreateRequestAsync(HttpMethod.Get, $"{baseUrl}/{requestUri}");
+
+            var client = _httpClientFactory.CreateClient();
+            var cts = new CancellationTokenSource(TimeSpan.FromMinutes(15));
+            var response = await client.SendAsync(request, cts.Token);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
         public async Task<T> PostAsync<T>(string requestUri, HttpContent content)
         {
-            AddTokenToRequest();
             string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+            var request = await CreateRequestAsync(HttpMethod.Post, $"{baseUrl}/{requestUri}", content);
 
-            // İçeriğin doğru formatta olduğundan emin olun
-            if (content.Headers.ContentType == null)
-            {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            }
-
-            var response = await _httpClient.PostAsync($"{baseUrl}/{requestUri}", content);
-
-            // Hata mesajını ve yanıtı inceleyin
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"Request failed with status code {response.StatusCode}: {errorContent}");
-            }
-
+            var client = _httpClientFactory.CreateClient();
+            var cts = new CancellationTokenSource(TimeSpan.FromMinutes(15));
+            var response = await client.SendAsync(request, cts.Token);
+            response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }
-        
-         public async Task<T> PutAsync<T>(string requestUri, HttpContent content)
-        {
-            AddTokenToRequest();
-            string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
 
-            var response = await _httpClient.PutAsync($"{baseUrl}/{requestUri}", content);
+        public async Task<T> PutAsync<T>(string requestUri, HttpContent content)
+        {
+            string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+            var request = await CreateRequestAsync(HttpMethod.Put, $"{baseUrl}/{requestUri}", content);
+
+            var client = _httpClientFactory.CreateClient();
+            var cts = new CancellationTokenSource(TimeSpan.FromMinutes(15));
+            var response = await client.SendAsync(request, cts.Token);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
         public async Task<T> PatchAsync<T>(string requestUri, HttpContent content)
         {
-            AddTokenToRequest();
             string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+            var request = await CreateRequestAsync(new HttpMethod("PATCH"), $"{baseUrl}/{requestUri}", content);
 
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{baseUrl}/{requestUri}")
-            {
-                Content = content
-            };
-
-            var response = await _httpClient.SendAsync(request);
+            var client = _httpClientFactory.CreateClient();
+            var cts = new CancellationTokenSource(TimeSpan.FromMinutes(15));
+            var response = await client.SendAsync(request, cts.Token);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
         public async Task DeleteAsync(string requestUri)
         {
-            AddTokenToRequest();
             string baseUrl = _configuration.GetValue<string>("ApiSettings:BaseUrl");
+            var request = await CreateRequestAsync(HttpMethod.Delete, $"{baseUrl}/{requestUri}");
 
-            var response = await _httpClient.DeleteAsync($"{baseUrl}/{requestUri}");
+            var client = _httpClientFactory.CreateClient();
+            var cts = new CancellationTokenSource(TimeSpan.FromMinutes(15));
+            var response = await client.SendAsync(request, cts.Token);
             response.EnsureSuccessStatusCode();
         }
     }

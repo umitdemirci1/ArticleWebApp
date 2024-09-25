@@ -1,8 +1,10 @@
 ﻿@using BlogProject.MVC.Helpers
 @using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
 @{
-    var token = Context.Request.Cookies["UserToken"];
-    var claims = TokenHelper.GetClaimsFromToken(token);
+    var token = HttpContextAccessor.HttpContext.Session.GetString("UserToken");
+    var claims = string.IsNullOrEmpty(token) ? Enumerable.Empty<Claim>() : TokenHelper.GetClaimsFromToken(token);
+
     var userRoles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    public class AppUser : IdentityUser<int>, IEntityBase
+    public class AppUser : IdentityUser<Guid>, IEntityBase
     {
         public bool IsDeleted { get; set; }
         public string FirstName { get; set; }

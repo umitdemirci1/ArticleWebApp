@@ -1,4 +1,4 @@
-﻿using Core.DTOs;
+﻿using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business.IServices
 {
-    public interface IUserService
+    public interface ITokenService
     {
-        Task<HomeCardAppUserDto> GetHomeCardUserByIdAsync(Guid userId); 
+        string GenerateJwtToken(AppUser user, IList<string> roles, bool rememberMe);
     }
 }

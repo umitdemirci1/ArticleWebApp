@@ -14,7 +14,7 @@ namespace Core.Models
         public bool IsDeleted { get; set; }
         public bool IsRejected { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public int AppUserId { get; set; }
+        public Guid AppUserId { get; set; }
         public AppUser AppUser { get; set; } = null!;
         public int ArticleId { get; set; }
         public Article Article { get; set; } = null!;

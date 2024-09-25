@@ -18,7 +18,6 @@ namespace BlogProject.API.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
-        private readonly IArticleRepository _articleRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public ArticleController(IArticleService articleService, IUnitOfWork unitOfWork)
@@ -27,12 +26,10 @@ namespace BlogProject.API.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Article
         [HttpGet]
         public async Task<IActionResult> GetAllArticles()
         {
             var articles = await _unitOfWork.Articles.GetAllAsync();
-
             return Ok(articles);
         }
 
@@ -43,16 +40,13 @@ namespace BlogProject.API.Controllers
             return Ok(articles);
         }
 
-        // GET: api/Article/WithAuthor
         [HttpGet("WithAuthor")]
         public async Task<ActionResult<IEnumerable<Article>>> GetAllArticlesWithAuthor()
         {
             var articles = await _unitOfWork.Articles.GetPublishedArticlesWithAuthor();
-
             return Ok(articles);
         }
 
-        // GET: api/Article/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Article>> GetArticleById(int id)
         {
@@ -63,7 +57,7 @@ namespace BlogProject.API.Controllers
             }
 
             var authorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(authorIdString, out int authorId) || article.AppUserId != authorId)
+            if (!Guid.TryParse(authorIdString, out Guid authorId) || article.AppUserId != authorId)
             {
                 return Forbid();
             }
@@ -71,29 +65,26 @@ namespace BlogProject.API.Controllers
             return Ok(article);
         }
 
-        // GET: api/Article/author
         [Authorize(Roles = "Author")]
         [HttpGet("author")]
         public async Task<ActionResult<IEnumerable<Article>>> GetArticlesByAuthor()
         {
-            //var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //if (userIdString == null)
-            //{
-            //    return BadRequest("Geçersiz kullanıcı ID'si.");
-            //}
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString == null)
+            {
+                return BadRequest("Geçersiz kullanıcı ID'si.");
+            }
 
-            //if (!int.TryParse(userIdString, out int userId))
-            //{
-            //    return BadRequest("Geçersiz kullanıcı ID'si.");
-            //}
+            if (!Guid.TryParse(userIdString, out Guid userId))
+            {
+                return BadRequest("Geçersiz kullanıcı ID'si.");
+            }
 
-            //var articles = await _articleService.GetArticlesByAuthorAsync(userId);
-            //return Ok(articles);
-            return Ok();
+            var articles = await _articleService.GetArticlesByAuthorAsync(userId);
+            return Ok(articles);
         }
 
-        // POST: api/Article
-        //[Authorize(Roles = "Author")]
+        [Authorize(Roles = "Author")]
         [HttpPost]
         public async Task<ActionResult> AddArticle([FromBody] ArticleDto articleDto)
         {
@@ -103,7 +94,7 @@ namespace BlogProject.API.Controllers
             }
 
             var authorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(authorIdString, out int authorId))
+            if (!Guid.TryParse(authorIdString, out Guid authorId))
             {
                 return BadRequest("Geçersiz yazar ID'si.");
             }
@@ -114,8 +105,7 @@ namespace BlogProject.API.Controllers
             return CreatedAtAction(nameof(GetArticleById), new { id = articleId }, articleDto);
         }
 
-        // PUT: api/Article/5
-        //[Authorize(Roles = "Author")]
+        [Authorize(Roles = "Author")]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateArticle(int id, [FromBody] Article article)
         {
@@ -131,7 +121,7 @@ namespace BlogProject.API.Controllers
             }
 
             var authorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(authorIdString, out int authorId) || existingArticle.AppUserId != authorId)
+            if (!Guid.TryParse(authorIdString, out Guid authorId) || existingArticle.AppUserId != authorId)
             {
                 return Forbid();
             }
@@ -140,8 +130,7 @@ namespace BlogProject.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Article/5
-        //[Authorize(Roles = "Author")]
+        [Authorize(Roles = "Author")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteArticle(int id)
         {
@@ -152,7 +141,7 @@ namespace BlogProject.API.Controllers
             }
 
             var authorIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(authorIdString, out int authorId) || article.AppUserId != authorId)
+            if (!Guid.TryParse(authorIdString, out Guid authorId) || article.AppUserId != authorId)
             {
                 return Forbid();
             }

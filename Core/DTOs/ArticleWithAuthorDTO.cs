@@ -10,7 +10,7 @@ namespace Core.DTOs
     {
         public int ArticleId { get; set; }
         public string Title { get; set; }
-        public int AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
         public string AuthorFullName { get; set; }
     }
 }
