@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +16,11 @@ namespace BlogProject.MVC.Controllers
     public class AccountController : Controller
     {
         private readonly ApiClientHelper _apiClientHelper;
-
-        public AccountController(ApiClientHelper apiClientHelper)
+        private readonly ILogger<AccountController> _logger;
+        public AccountController(ApiClientHelper apiClientHelper, ILogger<AccountController> logger)
         {
             _apiClientHelper = apiClientHelper;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -26,7 +30,7 @@ namespace BlogProject.MVC.Controllers
 
         public IActionResult Login()
         {
-            if (Request.Cookies.ContainsKey("UserToken"))
+            if (HttpContext.Session.GetString("UserToken") != null)
                 return RedirectToAction("Index", "Home");
             return View();
         }
@@ -34,29 +38,23 @@ namespace BlogProject.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-            try
-            {
-
-                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-
-                var response = await _apiClientHelper.PostAsync<TokenResponse>("Auth/login", content);
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");  
+                var response = await _apiClientHelper.PostAsync<TokenResponse>("auth/login", content);
 
                 if (response != null)
                 {
-                    Response.Cookies.Append("UserToken", response.Token);
+                    var token = response.Token;
+                    HttpContext.Session.SetString("UserToken", token);
+
                     return RedirectToAction("Index", "Home");
                 }
-            }
-            catch (HttpRequestException ex)
-            {
-                ModelState.AddModelError(string.Empty, $"Login failed: {ex.Message}");
+
+                ModelState.AddModelError(string.Empty, "Login failed.");
             }
 
-            return View();
+            return View(model);
         }
 
         public IActionResult Register()

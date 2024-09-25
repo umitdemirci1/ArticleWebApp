@@ -11,51 +11,81 @@ using Core.DTOs;
 
 namespace BlogProject.MVC.Controllers
 {
-    [ServiceFilter(typeof(TokenCheckFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
         private readonly ApiClientHelper _apiClientHelper;
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory, IConfiguration configuration, ApiClientHelper apiClientHelper)
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public HomeController(ILogger<HomeController> logger, ApiClientHelper apiClientHelper, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
-            _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
             _apiClientHelper = apiClientHelper;
+            _httpClientFactory = httpClientFactory;
         }
- 
+
         public async Task<IActionResult> Index()
-        {      
+        {
             var cardDtos = await _apiClientHelper.GetAsync<IEnumerable<HomeCardDto>>("Home/HomeCard");
 
-            if(cardDtos == null)
+            if (cardDtos == null)
             {
                 return View(new List<HomeCardDto>());
             }
             return View(cardDtos);
         }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var article = await _apiClientHelper.GetAsync<ArticleWithAuthorDTO>($"/articles/{id}");
-            if (article == null)
+            var articleDetailDto = await _apiClientHelper.GetAsync<ArticleDetailDto>($"Home/HomeCard/Details/{id}");
+            if (articleDetailDto == null)
             {
-                return NotFound();
+                _logger.LogError("The API request failed or no data was found.");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            return View(article);
+            return View(articleDetailDto);
         }
 
-        public IActionResult Privacy()
+
+        public async Task<IActionResult> Privacy()
         {
+            var result = await _apiClientHelper.GetAsync<string>($"Home/HomeCard/Test");
+            if (result == null)
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
             return View();
         }
+
+
+        public async Task<IActionResult> AdminOnly()
+        {
+            var apiUrl = "https://localhost:7242/api/Home/AdminOnly";
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await client.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                return View("AdminOnly", data);
+            }
+            else
+            {
+                return View("Error", "Unauthorized access or other error occurred.");
+            }
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-      
+
     }
 }
