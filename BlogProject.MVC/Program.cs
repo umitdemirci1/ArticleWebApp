@@ -3,14 +3,18 @@ using BlogProject.MVC.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add(new TokenCheckFilter());
-});
-builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<ApiClientHelper>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<TokenCheckFilter>();
+builder.Services.AddControllersWithViews(
+    options =>
+    {
+        options.Filters.Add<TokenCheckFilter>();
+    }
+);
+
+builder.Services.AddSession();
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ApiClientHelper>();
 
 var app = builder.Build();
 
@@ -26,6 +30,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
