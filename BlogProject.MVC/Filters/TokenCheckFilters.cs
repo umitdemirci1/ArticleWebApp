@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-public class TokenCheckFilter : ActionFilterAttribute
+public class TokenCheckFilter : IAsyncActionFilter
 {
     private static readonly HashSet<string> ExcludedActions = new HashSet<string>
     {
         "Account/Login",
         "Account/Register",
     };
-    public override void OnActionExecuting(ActionExecutingContext context)
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var controller = context.RouteData.Values["controller"]?.ToString();
         var action = context.RouteData.Values["action"]?.ToString();
@@ -16,15 +16,17 @@ public class TokenCheckFilter : ActionFilterAttribute
 
         if (ExcludedActions.Contains(actionPath))
         {
-            base.OnActionExecuting(context);
+            await next();
             return;
         }
 
-        var token = context.HttpContext.Request.Cookies["UserToken"];
+        var token = context.HttpContext.Session.GetString("UserToken");
         if (string.IsNullOrEmpty(token))
         {
             context.Result = new RedirectToActionResult("Login", "Account", null);
+            return;
         }
-        base.OnActionExecuting(context);
+
+        await next();
     }
 }
