@@ -10,30 +10,23 @@ namespace Business.Services
 {
     public class HomeCardService : IHomeCardService
     {
-        private readonly IArticleService _articleService;
-        private readonly IUserService _userService;
-        private readonly ILikeService _likeService;
-        private readonly IViewService _viewService;
-
-        public HomeCardService(IArticleService articleService, IUserService userService, ILikeService likeService, IViewService viewService)
+        private readonly IHomeCardDataService _homeCardDataService;
+        public HomeCardService(IHomeCardDataService homeCardDataService)
         {
-            _articleService = articleService;
-            _userService = userService;
-            _likeService = likeService;
-            _viewService = viewService;
+            _homeCardDataService = homeCardDataService;
         }
 
         public async Task<IEnumerable<HomeCardDto>> GetHomeCardDataAsync()
         {
-            var articles = await _articleService.GetHomeArticlesAsync();
+            var articles = await _homeCardDataService.GetHomeArticlesAsync();
 
             var homeCardDtos = new List<HomeCardDto>();
 
             foreach (var article in articles)
             {
-                var user = await _userService.GetHomeCardUserByIdAsync(article.UserId);
-                var likeCount = await _likeService.CountArticleLikeAsync(article.Id);
-                var viewCount = await _viewService.CountArticleViewsAsync(article.Id);
+                var user = await _homeCardDataService.GetHomeCardUserByIdAsync(article.UserId);
+                var likeCount = await _homeCardDataService.CountArticleLikeAsync(article.Id);
+                var viewCount = await _homeCardDataService.CountArticleViewsAsync(article.Id);
 
                 var homeCardDto = new HomeCardDto
                 {

@@ -26,7 +26,6 @@ namespace BlogProject.API.Controllers
         [HttpGet("HomeCard")]
         public async Task<IActionResult> GetHomeCardData()
         {
-            //buraya istekten gelen header ı görmek istiyorum
             var headers = Request.Headers;
             var datas = await _homeCardService.GetHomeCardDataAsync();
             return Ok(datas);

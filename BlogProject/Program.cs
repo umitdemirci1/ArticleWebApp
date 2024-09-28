@@ -95,6 +95,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IHomeCardService, HomeCardService>();
 builder.Services.AddScoped<IArticleDetailService, ArticleDetailService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHomeCardDataService, HomeCardDataService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
